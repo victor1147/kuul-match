@@ -2,13 +2,20 @@ import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
     devIndicators: false,
+    output: 'export',
     images: {
         remotePatterns: [
             {
-                protocol: 'http',
-                hostname: 'localhost',
-                port: '3001',
-                pathname: '/uploads/**',
+                protocol: 'https',
+                hostname: 'api.kuulmatch.com',
+                port: '',
+                pathname: '/public/uploads/**', // precise path matching (safer)
+            },
+            {
+                protocol: 'https',
+                hostname: 'api.kuulmatch.com',
+                port: '', // Leave empty for standard https
+                pathname: '/uploads/**', // Allow images from the uploads folder
             },
             {
                 protocol: 'https',
@@ -16,6 +23,7 @@ const nextConfig: NextConfig = {
             },
         ],
     },
+    
 };
 
 export default nextConfig;

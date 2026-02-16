@@ -2,8 +2,8 @@ import {Metadata} from "next";
 import Login from "@/components/login/login";
 
 export const metadata: Metadata = {
-    title: `Valentine`,
-    description: "A simple valentine's day website",
+    title: `KuulMatch - Log In`,
+    description: "Log In",
 };
 
 export default function Page() {

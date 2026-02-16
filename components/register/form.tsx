@@ -1,9 +1,20 @@
 "use client"
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { FaEye, FaEyeSlash, FaPlus } from "react-icons/fa";
 
+interface FormErrors {
+    name?: string;
+    email?: string;
+    password?: string;
+    confirmPassword?: string;
+    image?: string;
+    nickname?: string;
+}
+
 export default function Form() {
+    const router = useRouter();
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -14,7 +25,7 @@ export default function Form() {
     const [image, setImage] = useState<File | null>(null);
     const [nickname, setNickname] = useState("");
     const [imagePreview, setImagePreview] = useState<string | null>(null);
-    const [errors, setErrors] = useState<any>({});
+    const [errors, setErrors] = useState<FormErrors>({});
     const [loading, setLoading] = useState(false);
     const [serverMessage, setServerMessage] = useState<{ type: 'success' | 'error', message: string } | null>(null);
 
@@ -27,7 +38,7 @@ export default function Form() {
     };
 
     const validateStep1 = () => {
-        const newErrors: any = {};
+        const newErrors: FormErrors = {};
         if (!name) newErrors.name = "Name is required";
         if (!email) {
             newErrors.email = "Email is required";
@@ -54,7 +65,7 @@ export default function Form() {
 
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        const newErrors: any = {};
+        const newErrors: FormErrors = {};
         if (!image) newErrors.image = "Image is required";
         if (!nickname) newErrors.nickname = "Nickname is required";
 
@@ -77,7 +88,7 @@ export default function Form() {
         }
 
         try {
-            const response = await fetch('http://localhost:3001/register', {
+            const response = await fetch('https://api.kuulmatch.com/register', {
                 method: 'POST',
                 body: formData,
             });
@@ -86,6 +97,9 @@ export default function Form() {
 
             if (response.ok) {
                 setServerMessage({ type: 'success', message: result.message });
+                setTimeout(() => {
+                    router.push('/login');
+                }, 1500);
             } else {
                 setServerMessage({ type: 'error', message: result.error });
             }

@@ -1,9 +1,11 @@
 "use client"
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 
 export default function Form() {
+    const router = useRouter();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
@@ -39,7 +41,7 @@ export default function Form() {
             formData.append('email', email);
             formData.append('password', password);
 
-            const response = await fetch('http://localhost:3001/login', {
+            const response = await fetch('https://api.kuulmatch.com/login', {
                 method: 'POST',
                 body: formData,
             });
@@ -49,11 +51,7 @@ export default function Form() {
             if (response.ok) {
                 localStorage.setItem('token', result.token);
                 setServerMessage({ type: 'success', message: "Login successful!" });
-                // Optionally, you can redirect the user after a successful login
-                // For example, using Next.js router:
-                // import { useRouter } from 'next/navigation';
-                // const router = useRouter();
-                // router.push('/dashboard');
+                router.push('/');
             } else {
                 setServerMessage({ type: 'error', message: result.error || 'Invalid credentials.' });
             }
